@@ -1,0 +1,25 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build
+bin/
+obj/
+
+# Logs
+*.log
+
+# DB local
+*.sqlite
+
+# Rider
+.idea/
+
+# Sistema
+Thumbs.db
+.DS_Store
+
+# Publish
+publish/
+.vs/

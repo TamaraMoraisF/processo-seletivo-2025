@@ -1,0 +1,6 @@
+C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Infrastructure\bin\Debug\Seals.Duv.Infrastructure.dll
+C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Infrastructure\bin\Debug\Seals.Duv.Infrastructure.pdb
+C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Infrastructure\obj\Debug\Seals.Duv.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Infrastructure\obj\Debug\Seals.Duv.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Infrastructure\obj\Debug\Seals.Duv.Infrastructure.dll
+C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Infrastructure\obj\Debug\Seals.Duv.Infrastructure.pdb
