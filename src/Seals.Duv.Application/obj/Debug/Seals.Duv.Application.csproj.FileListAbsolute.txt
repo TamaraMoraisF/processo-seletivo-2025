@@ -1,6 +1,0 @@
-C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Application\bin\Debug\Seals.Duv.Application.dll
-C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Application\bin\Debug\Seals.Duv.Application.pdb
-C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Application\obj\Debug\Seals.Duv.Application.csproj.AssemblyReference.cache
-C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Application\obj\Debug\Seals.Duv.Application.csproj.CoreCompileInputs.cache
-C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Application\obj\Debug\Seals.Duv.Application.dll
-C:\Users\Tamara\source\repos\processo-seletivo-2025\src\Seals.Duv.Application\obj\Debug\Seals.Duv.Application.pdb
