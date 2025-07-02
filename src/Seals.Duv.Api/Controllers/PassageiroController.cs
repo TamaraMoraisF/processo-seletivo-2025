@@ -9,9 +9,9 @@ namespace Seals.Duv.Api.Controllers
     [Route("api/[controller]")]
     public class PassageiroController : ControllerBase
     {
-        private readonly SealsDuvDbContext _context;
+        private readonly DuvDbContext _context;
 
-        public PassageiroController(SealsDuvDbContext context)
+        public PassageiroController(DuvDbContext context)
         {
             _context = context;
         }

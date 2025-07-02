@@ -11,9 +11,9 @@ namespace Seals.Duv.Api.Controllers
     [Route("api/[controller]")]
     public class NavioController : ControllerBase
     {
-        private readonly SealsDuvDbContext _context;
+        private readonly DuvDbContext _context;
 
-        public NavioController(SealsDuvDbContext context)
+        public NavioController(DuvDbContext context)
         {
             _context = context;
         }

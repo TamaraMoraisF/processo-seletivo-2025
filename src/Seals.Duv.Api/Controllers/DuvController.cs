@@ -8,9 +8,9 @@ namespace Seals.Duv.Api.Controllers
     [Route("api/[controller]")]
     public class DuvController : ControllerBase
     {
-        private readonly SealsDuvDbContext _context;
+        private readonly DuvDbContext _context;
 
-        public DuvController(SealsDuvDbContext context)
+        public DuvController(DuvDbContext context)
         {
             _context = context;
         }

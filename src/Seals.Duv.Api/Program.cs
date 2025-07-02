@@ -3,29 +3,28 @@ using Seals.Duv.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext with InMemory
-builder.Services.AddDbContext<SealsDuvDbContext>(options =>
-    options.UseInMemoryDatabase("SealsDuvDb"));
+// Configura o DbContext com PostgreSQL
+builder.Services.AddDbContext<DuvDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add controllers and Swagger
+// Configura os controllers e o JSON
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+// Pipeline HTTP
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
