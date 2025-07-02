@@ -16,6 +16,6 @@
         public string? Sid { get; set; }
 
         public int DuvId { get; set; }
-        public required Duv Duv { get; set; }
+        public Duv? Duv { get; set; }
     }
 }

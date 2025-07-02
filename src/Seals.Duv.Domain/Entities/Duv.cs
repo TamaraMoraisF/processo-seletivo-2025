@@ -1,4 +1,5 @@
 ﻿namespace Seals.Duv.Domain.Entities
+
 {
     public class Duv
     {
