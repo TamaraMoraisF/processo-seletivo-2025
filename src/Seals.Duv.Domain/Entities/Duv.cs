@@ -8,7 +8,7 @@
         public DateTime DataViagem { get; set; }
 
         public int NavioId { get; set; }
-        public required Navio Navio { get; set; }
+        public Navio? Navio { get; set; }
 
         public ICollection<Passageiro> Passageiros { get; set; } = new List<Passageiro>();
     }

@@ -45,6 +45,19 @@ namespace Seals.Duv.Api.Controllers
             };
         }
 
+        [HttpGet("{id}/completo")]
+        public async Task<ActionResult<Seals.Duv.Domain.Entities.Duv>> GetDuvCompleta(int id)
+        {
+            var duv = await _context.Duvs
+                .Include(d => d.Navio)
+                .Include(d => d.Passageiros)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (duv == null) return NotFound();
+
+            return duv;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Seals.Duv.Domain.Entities.Duv>> Create(Seals.Duv.Domain.Entities.Duv duv)
         {
