@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function DuvList() {
   const [duvs, setDuvs] = useState([]);
@@ -20,8 +21,11 @@ function DuvList() {
         <ul>
           {duvs.map(duv => (
             <li key={duv.id}>
-              <strong>DUV:</strong> {duv.numero} <br />
-              <strong>Data:</strong> {new Date(duv.dataViagem).toLocaleDateString()}
+              <Link to={`/duv/${duv.id}`}>
+                <strong>DUV:</strong> {duv.numero} <br />
+                <strong>Data:</strong>{" "}
+                {new Date(duv.dataViagem).toLocaleDateString()}
+              </Link>
             </li>
           ))}
         </ul>

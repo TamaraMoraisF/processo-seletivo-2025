@@ -1,7 +1,11 @@
 import DuvList from "./pages/DuvList";
 
 function App() {
-  return <DuvList />;
+  return (
+    <div>
+      <DuvList />
+    </div>
+  );
 }
 
 export default App;
