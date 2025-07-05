@@ -27,7 +27,7 @@ function DuvList() {
             className={`duv-item ${selectedDuv?.id === duv.id ? "selected" : ""}`}
             onClick={() => setSelectedDuv(duv)}
           >
-            <strong>DUV {duv.numero}</strong>
+            <strong>DUV: {duv.numero}</strong>
             <br />
             <span>
               Data da viagem: {new Date(duv.dataViagem).toLocaleDateString()}
