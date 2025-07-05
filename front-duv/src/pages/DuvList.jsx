@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./../App.css";
+import { usePassageiroCrud } from "../hooks/usePassageiroCrud";
 
 function DuvList() {
   const [duvs, setDuvs] = useState([]);
@@ -15,6 +16,16 @@ function DuvList() {
       })
       .catch((error) => console.error("Erro ao buscar DUVs", error));
   }, []);
+
+  const {
+    modalAberto,
+    passageiroEmEdicao,
+    setPassageiroEmEdicao,
+    abrirFormularioPassageiro,
+    salvarPassageiro,
+    removerPassageiro,
+    setModalAberto
+  } = usePassageiroCrud(selectedDuv, setSelectedDuv, setDuvs);
 
   return (
     <>
@@ -62,6 +73,7 @@ function DuvList() {
             </p>
 
             <h3>Passageiros</h3>
+            <button className="botao botao-primario botao-adicionar" onClick={() => abrirFormularioPassageiro(null, 1)}>Adicionar Passageiro</button>
             <div className="pessoa-container">
               {selectedDuv.passageiros
                 ?.filter((p) => !p.sid)
@@ -70,11 +82,16 @@ function DuvList() {
                     <img src={p.fotoUrl} alt={p.nome} className="foto-pessoa" />
                     <span><strong>{p.nome}</strong></span>
                     <p>{p.nacionalidade}</p>
+                    <button className="botao botao-secundario" onClick={() => abrirFormularioPassageiro(p)}>Editar</button>
+                    <button className="botao botao-perigo" onClick={() => removerPassageiro(p.id)}>Remover</button>
                   </div>
                 ))}
             </div>
 
+            <div className="divisoria"></div>
+
             <h3>Tripulantes</h3>
+            <button className="botao botao-primario botao-adicionar" onClick={() => abrirFormularioPassageiro(null, 2)}>Adicionar Tripulante</button>
             <div className="pessoa-container">
               {selectedDuv.passageiros
                 ?.filter((p) => p.sid)
@@ -84,6 +101,8 @@ function DuvList() {
                     <span><strong>{p.nome}</strong></span>
                     <p>{p.nacionalidade}</p>
                     <p><em>SID:</em> {p.sid}</p>
+                    <button className="botao botao-secundario" onClick={() => abrirFormularioPassageiro(p)}>Editar</button>
+                    <button className="botao botao-perigo" onClick={() => removerPassageiro(p.id)}>Remover</button>
                   </div>
                 ))}
             </div>
@@ -100,6 +119,39 @@ function DuvList() {
           </div>
         )}
       </div>
+
+      {modalAberto && (
+        <div className="modal">
+          <h3>{passageiroEmEdicao.id ? "Editar" : "Adicionar"} {passageiroEmEdicao.tipo === 2 ? "Tripulante" : "Passageiro"}</h3>
+
+          <input
+            placeholder="Nome"
+            value={passageiroEmEdicao.nome}
+            onChange={(e) => setPassageiroEmEdicao({ ...passageiroEmEdicao, nome: e.target.value })}
+          />
+          <input
+            placeholder="Nacionalidade"
+            value={passageiroEmEdicao.nacionalidade}
+            onChange={(e) => setPassageiroEmEdicao({ ...passageiroEmEdicao, nacionalidade: e.target.value })}
+          />
+          <input
+            placeholder="Foto URL"
+            value={passageiroEmEdicao.fotoUrl}
+            onChange={(e) => setPassageiroEmEdicao({ ...passageiroEmEdicao, fotoUrl: e.target.value })}
+          />
+
+          {passageiroEmEdicao.tipo === 2 && (
+            <input
+              placeholder="SID"
+              value={passageiroEmEdicao.sid}
+              onChange={(e) => setPassageiroEmEdicao({ ...passageiroEmEdicao, sid: e.target.value })}
+            />
+          )}
+
+          <button className="botao botao-primario" onClick={salvarPassageiro}>Salvar</button>
+          <button className="botao botao-perigo" onClick={() => setModalAberto(false)}>Cancelar</button>
+        </div>
+      )}
     </>
   );
 }

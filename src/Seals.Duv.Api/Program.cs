@@ -46,9 +46,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseCors("AllowFrontLocalhost");
-
+app.UseCors("AllowViteFront");
 app.UseAuthorization();
 app.MapControllers();
-app.UseCors("AllowViteFront");
 app.Run();

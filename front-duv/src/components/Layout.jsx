@@ -1,9 +1,6 @@
-// src/components/Layout.jsx
-import { Link } from "react-router-dom";
-
 function Layout({ children }) {
   return (
-    <div style={{ fontFamily: "Segoe UI, sans-serif", backgroundColor: "#f5f7fa", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "Segoe UI, sans-serif", backgroundColor: "#f5f7fa" }}>
       <header style={{
         background: "#0B3C5D",
         padding: "1rem 2rem",
@@ -17,23 +14,6 @@ function Layout({ children }) {
         zIndex: 1000
       }}>
         <h2 style={{ margin: 0 }}>📄 Portal de DUVs</h2>
-        <nav>
-          <Link
-            to="/"
-            style={{
-              color: "#fff",
-              textDecoration: "none",
-              fontWeight: "bold",
-              fontSize: "1rem",
-              borderBottom: "2px solid transparent",
-              paddingBottom: "2px"
-            }}
-            onMouseOver={(e) => e.target.style.borderBottom = "2px solid white"}
-            onMouseOut={(e) => e.target.style.borderBottom = "2px solid transparent"}
-          >
-            Início
-          </Link>
-        </nav>
       </header>
 
       <main style={{ padding: "2rem 3rem" }}>
