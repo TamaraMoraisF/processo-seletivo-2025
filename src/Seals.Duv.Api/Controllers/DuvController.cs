@@ -1,80 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Seals.Duv.Infrastructure.Persistence;
+using Seals.Duv.Application.DTOs;
+using Seals.Duv.Application.Interfaces;
 
 namespace Seals.Duv.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DuvController(DuvDbContext context) : ControllerBase
+    public class DuvController(IDuvApplication application) : ControllerBase
     {
-        private readonly DuvDbContext _context = context;
+        private readonly IDuvApplication _application = application;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Domain.Entities.Duv>>> GetAll()
+        public async Task<ActionResult<IEnumerable<DuvDto>>> GetAll()
         {
-            var duvs = await _context.Duvs
-                .Include(d => d.Navio)
-                .Include(d => d.Passageiros)
-                .ToListAsync();
-
-            return Ok(duvs);
+            var items = await _application.GetAllAsync();
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetById(int id)
+        public async Task<ActionResult<DuvDto>> GetById(int id)
         {
-            var duv = await _context.Duvs
-                .Include(d => d.Navio)
-                .Include(d => d.Passageiros)
-                .FirstOrDefaultAsync(d => d.Id == id);
-
-            if (duv == null) return NotFound();
-
-            return Ok(new
-            {
-                duv.Id,
-                duv.Numero,
-                duv.DataViagem,
-                duv.Navio,
-                Passageiros = duv.Passageiros
-                    .GroupBy(p => p.Tipo)
-                    .ToDictionary(g => g.Key.ToString(), g => g.ToList())
-            });
-        }
-
-        [HttpGet("{id}/completo")]
-        public async Task<ActionResult<Domain.Entities.Duv>> GetDuvCompleta(int id)
-        {
-            var duv = await _context.Duvs
-                .Include(d => d.Navio)
-                .Include(d => d.Passageiros)
-                .FirstOrDefaultAsync(d => d.Id == id);
-
-            if (duv == null) return NotFound();
-
-            return Ok(duv);
+            var item = await _application.GetByIdAsync(id);
+            return item is not null ? Ok(item) : NotFound();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Domain.Entities.Duv>> Create(Domain.Entities.Duv duv)
+        public async Task<ActionResult<DuvDto>> Create(DuvDto dto)
         {
-            duv.DataViagem = DateTime.SpecifyKind(duv.DataViagem, DateTimeKind.Utc);
+            var created = await _application.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
 
-            _context.Duvs.Add(duv);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetById), new { id = duv.Id }, duv);
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, DuvDto dto)
+        {
+            await _application.UpdateAsync(id, dto);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var duv = await _context.Duvs.FindAsync(id);
-            if (duv == null) return NotFound();
-
-            _context.Duvs.Remove(duv);
-            await _context.SaveChangesAsync();
+            await _application.DeleteAsync(id);
             return NoContent();
         }
     }

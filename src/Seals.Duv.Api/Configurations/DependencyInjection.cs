@@ -22,20 +22,23 @@ namespace Seals.Duv.Api.Configurations
 
         private static void RegisterApplications(IServiceCollection services)
         {
-            services.AddScoped<IPassageiroApplication, PassageiroApplication>();
+            services.AddScoped<IDuvApplication, DuvApplication>();
             services.AddScoped<INavioApplication, NavioApplication>();
+            services.AddScoped<IPassageiroApplication, PassageiroApplication>();
         }
 
         private static void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<IPassageiroService, PassageiroService>();
+            services.AddScoped<IDuvService, DuvService>();
             services.AddScoped<INavioService, NavioService>();
+            services.AddScoped<IPassageiroService, PassageiroService>();
         }
 
         private static void RegisterRepositories(IServiceCollection services)
         {
-            services.AddScoped<IPassageiroRepository, PassageiroRepository>();
+            services.AddScoped<IDuvRepository, DuvRepository>();
             services.AddScoped<INavioRepository, NavioRepository>();
+            services.AddScoped<IPassageiroRepository, PassageiroRepository>();
         }
     }
 }

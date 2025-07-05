@@ -11,5 +11,6 @@ namespace Seals.Duv.Domain.Entities
         public required string FotoUrl { get; set; }
         public string? Sid { get; set; }
         public int DuvId { get; set; }
+        public Duv Duv { get; set; } = null!;
     }
 }

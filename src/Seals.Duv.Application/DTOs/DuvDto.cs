@@ -1,12 +1,12 @@
-﻿namespace Seals.Duv.Domain.Entities
+﻿namespace Seals.Duv.Application.DTOs
 {
-    public class Duv
+    public class DuvDto
     {
         public int Id { get; set; }
         public string Numero { get; set; } = string.Empty;
         public DateTime DataViagem { get; set; }
         public int NavioId { get; set; }
-        public Navio Navio { get; set; } = null!;
-        public ICollection<Passageiro> Passageiros { get; set; } = [];
+        public NavioDto? Navio { get; set; }
+        public IEnumerable<PassageiroDto> Passageiros { get; set; } = [];
     }
 }

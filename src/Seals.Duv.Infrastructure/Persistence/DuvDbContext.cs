@@ -12,6 +12,16 @@ namespace Seals.Duv.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Domain.Entities.Duv>()
+                .HasMany(d => d.Passageiros)
+                .WithOne(p => p.Duv)
+                .HasForeignKey(p => p.DuvId);
+
+            modelBuilder.Entity<Domain.Entities.Duv>()
+                .HasOne(d => d.Navio)
+                .WithMany(n => n.Duvs)
+                .HasForeignKey(d => d.NavioId);
         }
     }
 }
