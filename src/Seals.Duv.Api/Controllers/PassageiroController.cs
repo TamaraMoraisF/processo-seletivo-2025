@@ -7,14 +7,9 @@ namespace Seals.Duv.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PassageiroController : ControllerBase
+    public class PassageiroController(DuvDbContext context) : ControllerBase
     {
-        private readonly DuvDbContext _context;
-
-        public PassageiroController(DuvDbContext context)
-        {
-            _context = context;
-        }
+        private readonly DuvDbContext _context = context;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Passageiro>>> GetAll()
@@ -48,8 +43,6 @@ namespace Seals.Duv.Api.Controllers
             existente.Tipo = passageiro.Tipo;
             existente.Nacionalidade = passageiro.Nacionalidade;
             existente.FotoUrl = passageiro.FotoUrl;
-            existente.Sid = passageiro.Sid;
-            existente.DuvId = passageiro.DuvId;
 
             await _context.SaveChangesAsync();
             return NoContent();

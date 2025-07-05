@@ -2,21 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Seals.Duv.Domain.Entities;
 using Seals.Duv.Infrastructure.Persistence;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Seals.Duv.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class NavioController : ControllerBase
+    public class NavioController(DuvDbContext context) : ControllerBase
     {
-        private readonly DuvDbContext _context;
-
-        public NavioController(DuvDbContext context)
-        {
-            _context = context;
-        }
+        private readonly DuvDbContext _context = context;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Navio>>> GetAll()

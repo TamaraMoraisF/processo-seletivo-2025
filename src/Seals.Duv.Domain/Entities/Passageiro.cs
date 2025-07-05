@@ -1,11 +1,7 @@
-﻿namespace Seals.Duv.Domain.Entities
-{
-    public enum TipoPassageiro
-    {
-        Passageiro = 1,
-        Tripulante = 2
-    }
+﻿using Seals.Duv.Domain.Enum;
 
+namespace Seals.Duv.Domain.Entities
+{
     public class Passageiro
     {
         public int Id { get; set; }
@@ -14,8 +10,7 @@
         public required string Nacionalidade { get; set; }
         public required string FotoUrl { get; set; }
         public string? Sid { get; set; }
-
         public int DuvId { get; set; }
-        public Duv? Duv { get; set; }
+        public Duv Duv { get; set; } = null!;
     }
 }

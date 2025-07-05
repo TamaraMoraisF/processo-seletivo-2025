@@ -3,11 +3,8 @@ using Seals.Duv.Domain.Entities;
 
 namespace Seals.Duv.Infrastructure.Persistence
 {
-    public class DuvDbContext : DbContext
+    public class DuvDbContext(DbContextOptions<DuvDbContext> options) : DbContext(options)
     {
-        public DuvDbContext(DbContextOptions<DuvDbContext> options)
-            : base(options) { }
-
         public DbSet<Domain.Entities.Duv> Duvs { get; set; }
         public DbSet<Navio> Navios { get; set; }
         public DbSet<Passageiro> Passageiros { get; set; }

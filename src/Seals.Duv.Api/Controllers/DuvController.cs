@@ -1,23 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Seals.Duv.Infrastructure.Persistence;
-using Seals.Duv.Domain.Entities;
 
-namespace Seals.Duv.Domain.Entities
+namespace Seals.Duv.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DuvController : ControllerBase
+    public class DuvController(DuvDbContext context) : ControllerBase
     {
-        private readonly DuvDbContext _context;
-
-        public DuvController(DuvDbContext context)
-        {
-            _context = context;
-        }
+        private readonly DuvDbContext _context = context;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Duv>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Domain.Entities.Duv>>> GetAll()
         {
             var duvs = await _context.Duvs
                 .Include(d => d.Navio)
@@ -42,7 +36,7 @@ namespace Seals.Duv.Domain.Entities
                 duv.Id,
                 duv.Numero,
                 duv.DataViagem,
-                Navio = duv.Navio,
+                duv.Navio,
                 Passageiros = duv.Passageiros
                     .GroupBy(p => p.Tipo)
                     .ToDictionary(g => g.Key.ToString(), g => g.ToList())
@@ -50,7 +44,7 @@ namespace Seals.Duv.Domain.Entities
         }
 
         [HttpGet("{id}/completo")]
-        public async Task<ActionResult<Duv>> GetDuvCompleta(int id)
+        public async Task<ActionResult<Domain.Entities.Duv>> GetDuvCompleta(int id)
         {
             var duv = await _context.Duvs
                 .Include(d => d.Navio)
@@ -63,7 +57,7 @@ namespace Seals.Duv.Domain.Entities
         }
 
         [HttpPost]
-        public async Task<ActionResult<Duv>> Create(Duv duv)
+        public async Task<ActionResult<Domain.Entities.Duv>> Create(Domain.Entities.Duv duv)
         {
             duv.DataViagem = DateTime.SpecifyKind(duv.DataViagem, DateTimeKind.Utc);
 
