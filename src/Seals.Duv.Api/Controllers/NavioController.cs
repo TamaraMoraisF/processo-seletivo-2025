@@ -1,60 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Seals.Duv.Domain.Entities;
-using Seals.Duv.Infrastructure.Persistence;
+using Seals.Duv.Application.DTOs;
+using Seals.Duv.Application.Interfaces;
 
 namespace Seals.Duv.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class NavioController(DuvDbContext context) : ControllerBase
+    public class NavioController(INavioApplication application) : ControllerBase
     {
-        private readonly DuvDbContext _context = context;
+        private readonly INavioApplication _application = application;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Navio>>> GetAll()
+        public async Task<ActionResult<IEnumerable<NavioDto>>> GetAll()
         {
-            return await _context.Navios.ToListAsync();
+            var items = await _application.GetAllAsync();
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Navio>> GetById(int id)
+        public async Task<ActionResult<NavioDto>> GetById(int id)
         {
-            var navio = await _context.Navios.FindAsync(id);
-            if (navio == null) return NotFound();
-            return navio;
+            var item = await _application.GetByIdAsync(id);
+            return item is not null ? Ok(item) : NotFound();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Navio>> Create(Navio navio)
+        public async Task<ActionResult<NavioDto>> Create(NavioDto dto)
         {
-            _context.Navios.Add(navio);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = navio.Id }, navio);
+            var created = await _application.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Navio navio)
+        public async Task<IActionResult> Update(int id, NavioDto dto)
         {
-            var navioExistente = await _context.Navios.FindAsync(id);
-            if (navioExistente == null) return NotFound();
-
-            navioExistente.Nome = navio.Nome;
-            navioExistente.Bandeira = navio.Bandeira;
-            navioExistente.ImagemUrl = navio.ImagemUrl;
-
-            await _context.SaveChangesAsync();
+            await _application.UpdateAsync(id, dto);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var navio = await _context.Navios.FindAsync(id);
-            if (navio == null) return NotFound();
-
-            _context.Navios.Remove(navio);
-            await _context.SaveChangesAsync();
+            await _application.DeleteAsync(id);
             return NoContent();
         }
     }
