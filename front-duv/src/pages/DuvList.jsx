@@ -39,7 +39,7 @@ function DuvList() {
       <div className="main">
         {selectedDuv ? (
           <>
-            <h1>DUV {selectedDuv.numero}</h1>
+            <h1>DUV: {selectedDuv.numero}</h1>
             <p>
               <strong>Data da viagem:</strong>{" "}
               {new Date(selectedDuv.dataViagem).toLocaleDateString()}
@@ -54,7 +54,9 @@ function DuvList() {
               className="ship-img"
             />
 
-            <h2 style={{ marginTop: "2rem" }}>{selectedDuv.navio?.nome}</h2>
+            <p>
+              <strong>Nome do Navio:</strong> {selectedDuv.navio?.nome}
+            </p>
             <p>
               <strong>Bandeira:</strong> {selectedDuv.navio?.bandeira}
             </p>
