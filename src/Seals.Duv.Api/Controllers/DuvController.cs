@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Seals.Duv.Infrastructure.Persistence;
+using Seals.Duv.Domain.Entities;
 
-namespace Seals.Duv.Api.Controllers
+namespace Seals.Duv.Domain.Entities
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -16,12 +17,14 @@ namespace Seals.Duv.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Seals.Duv.Domain.Entities.Duv>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Duv>>> GetAll()
         {
-            return await _context.Duvs
+            var duvs = await _context.Duvs
                 .Include(d => d.Navio)
                 .Include(d => d.Passageiros)
                 .ToListAsync();
+
+            return Ok(duvs);
         }
 
         [HttpGet("{id}")]
@@ -34,19 +37,20 @@ namespace Seals.Duv.Api.Controllers
 
             if (duv == null) return NotFound();
 
-            return new
+            return Ok(new
             {
+                duv.Id,
                 duv.Numero,
                 duv.DataViagem,
                 Navio = duv.Navio,
                 Passageiros = duv.Passageiros
                     .GroupBy(p => p.Tipo)
                     .ToDictionary(g => g.Key.ToString(), g => g.ToList())
-            };
+            });
         }
 
         [HttpGet("{id}/completo")]
-        public async Task<ActionResult<Seals.Duv.Domain.Entities.Duv>> GetDuvCompleta(int id)
+        public async Task<ActionResult<Duv>> GetDuvCompleta(int id)
         {
             var duv = await _context.Duvs
                 .Include(d => d.Navio)
@@ -55,25 +59,18 @@ namespace Seals.Duv.Api.Controllers
 
             if (duv == null) return NotFound();
 
-            return duv;
+            return Ok(duv);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Seals.Duv.Domain.Entities.Duv>> Create(Seals.Duv.Domain.Entities.Duv duv)
+        public async Task<ActionResult<Duv>> Create(Duv duv)
         {
+            duv.DataViagem = DateTime.SpecifyKind(duv.DataViagem, DateTimeKind.Utc);
+
             _context.Duvs.Add(duv);
             await _context.SaveChangesAsync();
+
             return CreatedAtAction(nameof(GetById), new { id = duv.Id }, duv);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Seals.Duv.Domain.Entities.Duv duv)
-        {
-            if (id != duv.Id) return BadRequest();
-
-            _context.Entry(duv).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return NoContent();
         }
 
         [HttpDelete("{id}")]

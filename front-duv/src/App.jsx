@@ -1,10 +1,14 @@
 import DuvList from "./pages/DuvList";
+import Layout from "./components/Layout";
+import "./App.css";
 
 function App() {
   return (
-    <div>
-      <DuvList />
-    </div>
+    <Layout>
+      <div className="container">
+        <DuvList />
+      </div>
+    </Layout>
   );
 }
 

@@ -26,6 +26,16 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowViteFront", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Swagger
@@ -36,4 +46,5 @@ app.UseCors("AllowFrontLocalhost");
 
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors("AllowViteFront");
 app.Run();

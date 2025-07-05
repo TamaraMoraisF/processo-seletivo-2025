@@ -1,42 +1,104 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f7fa;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 300px;
+  background: white;
+  padding: 1rem;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  margin-bottom: 1rem;
+  color: #0B3C5D;
+}
+
+.duv-item {
+  background-color: #f1f4f8;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.duv-item:hover {
+  background-color: #e1e6ed;
+}
+
+.duv-item.selected {
+  background-color: #0B3C5D;
+  color: white;
+  font-weight: bold;
+}
+
+.main {
+  flex: 1;
   padding: 2rem;
+  overflow-y: auto;
+}
+
+.main h1 {
+  color: #0B3C5D;
+}
+
+.ship-img {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 1rem;
+  object-fit: cover;
+  max-height: 250px;
+}
+
+.pessoa-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.pessoa-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 0.5rem;
+  width: 130px;
   text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.foto-pessoa {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.placeholder-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  color: #555;
+  text-align: center;
+  opacity: 0.9;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.placeholder-img {
+  width: 120px;
+  height: auto;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
 }

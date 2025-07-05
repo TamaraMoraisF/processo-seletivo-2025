@@ -5,10 +5,11 @@ namespace Seals.Duv.Domain.Entities
     public class Navio
     {
         public int Id { get; set; }
-        public required string Nome { get; set; }
-        public required string Bandeira { get; set; }
-        public required string ImagemUrl { get; set; }
 
-        public ICollection<Duv> Duvs { get; set; } = new List<Duv>();
+        public string Nome { get; set; } = string.Empty;
+        public string Bandeira { get; set; } = string.Empty;
+        public string ImagemUrl { get; set; } = string.Empty;
+
+        public List<Duv> Duvs { get; set; } = new();
     }
 }

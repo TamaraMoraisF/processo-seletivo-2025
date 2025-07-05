@@ -1,15 +1,15 @@
 ﻿namespace Seals.Duv.Domain.Entities
-
 {
     public class Duv
     {
         public int Id { get; set; }
-        public required string Numero { get; set; }
+
+        public string Numero { get; set; } = string.Empty;
         public DateTime DataViagem { get; set; }
 
         public int NavioId { get; set; }
-        public Navio? Navio { get; set; }
+        public Navio Navio { get; set; } = null!;
 
-        public ICollection<Passageiro> Passageiros { get; set; } = new List<Passageiro>();
+        public List<Passageiro> Passageiros { get; set; } = new();
     }
 }
