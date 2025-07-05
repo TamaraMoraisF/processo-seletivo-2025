@@ -53,21 +53,21 @@ function DuvList() {
               alt="Navio"
               className="ship-img"
             />
-            <h2 style={{ marginTop: "2rem" }}>
-              {selectedDuv.navio?.nome || "MSC Virtuosa"}
-            </h2>
+
+            <h2 style={{ marginTop: "2rem" }}>{selectedDuv.navio?.nome}</h2>
             <p>
-              🇧🇸 <strong>{selectedDuv.navio?.bandeira || "Bahama"}</strong>
+              <strong>Bandeira:</strong> {selectedDuv.navio?.bandeira}
             </p>
 
             <h3>Passageiros</h3>
             <div className="pessoa-container">
               {selectedDuv.passageiros
                 ?.filter((p) => !p.sid)
-                .map((p, i) => (
-                  <div key={i} className="pessoa-card">
+                .map((p) => (
+                  <div key={p.id} className="pessoa-card">
                     <img src={p.fotoUrl} alt={p.nome} className="foto-pessoa" />
-                    <span>{p.nome}</span>
+                    <span><strong>{p.nome}</strong></span>
+                    <p>{p.nacionalidade}</p>
                   </div>
                 ))}
             </div>
@@ -76,10 +76,12 @@ function DuvList() {
             <div className="pessoa-container">
               {selectedDuv.passageiros
                 ?.filter((p) => p.sid)
-                .map((p, i) => (
-                  <div key={i} className="pessoa-card">
+                .map((p) => (
+                  <div key={p.id} className="pessoa-card">
                     <img src={p.fotoUrl} alt={p.nome} className="foto-pessoa" />
-                    <span>{p.nome}</span>
+                    <span><strong>{p.nome}</strong></span>
+                    <p>{p.nacionalidade}</p>
+                    <p><em>SID:</em> {p.sid}</p>
                   </div>
                 ))}
             </div>
