@@ -1,7 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Seals.Duv.Api.Configurations;
+using Seals.Duv.Application.Mappings;
 using Seals.Duv.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddProjectDependencies();
 
 builder.Services.AddCors(options =>
 {
@@ -16,7 +20,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<DuvDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Controllers
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -36,9 +39,10 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
 var app = builder.Build();
 
-// Swagger
 app.UseSwagger();
 app.UseSwaggerUI();
 

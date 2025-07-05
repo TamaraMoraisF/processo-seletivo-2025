@@ -1,61 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Seals.Duv.Domain.Entities;
-using Seals.Duv.Infrastructure.Persistence;
+using Seals.Duv.Application.DTOs;
+using Seals.Duv.Application.Interfaces;
 
 namespace Seals.Duv.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PassageiroController(DuvDbContext context) : ControllerBase
+    public class PassageiroController(IPassageiroApplication application) : ControllerBase
     {
-        private readonly DuvDbContext _context = context;
+        private readonly IPassageiroApplication _application = application;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Passageiro>>> GetAll()
+        public async Task<ActionResult<IEnumerable<PassageiroDto>>> GetAll()
         {
-            return await _context.Passageiros.ToListAsync();
+            var items = await _application.GetAllAsync();
+            return Ok(items);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Passageiro>> GetById(int id)
+        public async Task<ActionResult<PassageiroDto>> GetById(int id)
         {
-            var passageiro = await _context.Passageiros.FindAsync(id);
-            if (passageiro == null) return NotFound();
-            return passageiro;
+            var result = await _application.GetByIdAsync(id);
+            return result is not null ? Ok(result) : NotFound();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Passageiro>> Create(Passageiro passageiro)
+        public async Task<ActionResult<PassageiroDto>> Create(PassageiroDto dto)
         {
-            _context.Passageiros.Add(passageiro);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = passageiro.Id }, passageiro);
+            var created = await _application.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Passageiro passageiro)
+        public async Task<IActionResult> Update(int id, PassageiroDto dto)
         {
-            var existente = await _context.Passageiros.FindAsync(id);
-            if (existente == null) return NotFound();
-
-            existente.Nome = passageiro.Nome;
-            existente.Tipo = passageiro.Tipo;
-            existente.Nacionalidade = passageiro.Nacionalidade;
-            existente.FotoUrl = passageiro.FotoUrl;
-
-            await _context.SaveChangesAsync();
+            await _application.UpdateAsync(id, dto);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var passageiro = await _context.Passageiros.FindAsync(id);
-            if (passageiro == null) return NotFound();
-
-            _context.Passageiros.Remove(passageiro);
-            await _context.SaveChangesAsync();
+            await _application.DeleteAsync(id);
             return NoContent();
         }
     }
