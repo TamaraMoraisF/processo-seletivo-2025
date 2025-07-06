@@ -14,7 +14,8 @@ namespace Seals.Duv.Application.Mappings
             CreateMap<Navio, NavioDto>();
             CreateMap<CreateNavioDto, Navio>();
             CreateMap<UpdateNavioDto, Navio>();
-            CreateMap<Passageiro, PassageiroDto>();
+            CreateMap<Passageiro, PassageiroDto>()
+                .ForMember(dest => dest.DuvGuid, opt => opt.MapFrom(src => src.Duv.DuvGuid));
             CreateMap<CreatePassageiroDto, Passageiro>();
             CreateMap<UpdatePassageiroDto, Passageiro>();
             CreateMap<PassageiroDuvDto, Passageiro>();

@@ -11,12 +11,7 @@ namespace Seals.Duv.Application.Services
 
         public Task<Passageiro?> GetByGuidAsync(Guid guid) => _repository.GetByGuidAsync(guid);
 
-        public Task<Passageiro> CreateAsync(Passageiro passageiro)
-        {
-            passageiro.PassageiroGuid = Guid.NewGuid();
-
-            return _repository.AddAsync(passageiro).ContinueWith(_ => passageiro);
-        }
+        public Task<Passageiro> CreateAsync(Passageiro passageiro) => _repository.AddAsync(passageiro).ContinueWith(_ => passageiro);
 
         public async Task UpdateByGuidAsync(Guid guid, Passageiro passageiro)
         {

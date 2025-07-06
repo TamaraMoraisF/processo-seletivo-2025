@@ -16,12 +16,7 @@ namespace Seals.Duv.Application.Services
 
         public Task<Navio?> GetByGuidAsync(Guid guid) => _repository.GetByGuidAsync(guid);
 
-        public Task<Navio> CreateAsync(Navio navio)
-        {
-            navio.NavioGuid = Guid.NewGuid();
-
-            return _repository.CreateAsync(navio);
-        }
+        public Task<Navio> CreateAsync(Navio navio) => _repository.CreateAsync(navio);
 
         public async Task UpdateByGuidAsync(Guid guid, Navio navio)
         {

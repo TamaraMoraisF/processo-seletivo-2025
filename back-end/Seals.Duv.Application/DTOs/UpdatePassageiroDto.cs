@@ -9,6 +9,6 @@ namespace Seals.Duv.Application.DTOs
         public string Nacionalidade { get; set; } = string.Empty;
         public string FotoUrl { get; set; } = string.Empty;
         public string? Sid { get; set; }
-        public int DuvId { get; set; }
+        public Guid DuvGuid { get; set; }
     }
 }

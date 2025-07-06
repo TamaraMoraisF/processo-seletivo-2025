@@ -10,10 +10,14 @@ namespace Seals.Duv.Infrastructure.Repositories
         private readonly DuvDbContext _context = context;
 
         public async Task<IEnumerable<Passageiro>> GetAllAsync() =>
-            await _context.Passageiros.ToListAsync();
+            await _context.Passageiros
+                .Include(p => p.Duv)
+                .ToListAsync();
 
         public async Task<Passageiro?> GetByGuidAsync(Guid guid) =>
-            await _context.Passageiros.FirstOrDefaultAsync(p => p.PassageiroGuid == guid);
+            await _context.Passageiros
+                .Include(p => p.Duv)
+                .FirstOrDefaultAsync(p => p.PassageiroGuid == guid);
 
         public async Task AddAsync(Passageiro passageiro)
         {

@@ -32,8 +32,6 @@ namespace Seals.Duv.Application.Applications
         public async Task<NavioDto> CreateAsync(CreateNavioDto dto)
         {
             var entity = _mapper.Map<Navio>(dto);
-            if (entity.NavioGuid == Guid.Empty)
-                entity.NavioGuid = Guid.NewGuid();
 
             var created = await _service.CreateAsync(entity);
             return _mapper.Map<NavioDto>(created);

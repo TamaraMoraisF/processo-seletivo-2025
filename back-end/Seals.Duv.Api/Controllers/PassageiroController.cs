@@ -28,13 +28,19 @@ namespace Seals.Duv.Api.Controllers
         public async Task<ActionResult<PassageiroDto>> Create(CreatePassageiroDto dto)
         {
             var created = await _application.CreateAsync(dto);
+            if (created is null)
+                return NotFound("DUV not found for the provided DuvGuid");
+
             return CreatedAtAction(nameof(GetByGuid), new { guid = created.PassageiroGuid }, created);
         }
 
         [HttpPut("{guid}")]
         public async Task<IActionResult> Update(Guid guid, UpdatePassageiroDto dto)
         {
-            await _application.UpdateByGuidAsync(guid, dto);
+            var success = await _application.UpdateByGuidAsync(guid, dto);
+            if (!success)
+                return NotFound("DUV not found for the provided DuvGuid");
+
             return NoContent();
         }
 
