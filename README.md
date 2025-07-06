@@ -126,9 +126,3 @@ O repositório é dividido em duas principais seções:
 ## Conclusão
 
 Este repositório contém a implementação do desafio técnico do processo seletivo, abrangendo tanto o back-end quanto o front-end. Ambas as partes foram estruturadas de acordo com as melhores práticas de desenvolvimento e focando em uma arquitetura limpa e escalável.
-
----
-
-## Licença
-
-Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
