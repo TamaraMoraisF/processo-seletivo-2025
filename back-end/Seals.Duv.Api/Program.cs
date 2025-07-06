@@ -2,6 +2,7 @@
 using Seals.Duv.Api.Configurations;
 using Seals.Duv.Application.Mappings;
 using Seals.Duv.Infrastructure.Persistence;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,13 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
+});
 
 builder.Services.AddCors(options =>
 {
