@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Seals.Duv.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using Seals.Duv.Infrastructure.Persistence;
 namespace Seals.Duv.Infrastructure.Migrations
 {
     [DbContext(typeof(DuvDbContext))]
-    partial class DuvDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250706135341_AddNavioGuid")]
+    partial class AddNavioGuid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -23,28 +23,28 @@ namespace Seals.Duv.Application.Applications
             return _mapper.Map<IEnumerable<NavioDto>>(entities);
         }
 
-        public async Task<NavioDto?> GetByIdAsync(int id)
+        public async Task<NavioDto?> GetByGuidAsync(Guid guid)
         {
-            var entity = await _service.GetByIdAsync(id);
+            var entity = await _service.GetByGuidAsync(guid);
             return _mapper.Map<NavioDto>(entity);
         }
 
-        public async Task<NavioDto> CreateAsync(NavioDto dto)
+        public async Task<NavioDto> CreateAsync(CreateNavioDto dto)
         {
             var entity = _mapper.Map<Navio>(dto);
+            if (entity.NavioGuid == Guid.Empty)
+                entity.NavioGuid = Guid.NewGuid();
+
             var created = await _service.CreateAsync(entity);
             return _mapper.Map<NavioDto>(created);
         }
 
-        public async Task UpdateAsync(int id, NavioDto dto)
+        public async Task UpdateByGuidAsync(Guid guid, UpdateNavioDto dto)
         {
             var entity = _mapper.Map<Navio>(dto);
-            await _service.UpdateAsync(id, entity);
+            await _service.UpdateByGuidAsync(guid, entity);
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            await _service.DeleteAsync(id);
-        }
+        public Task DeleteByGuidAsync(Guid guid) => _service.DeleteByGuidAsync(guid);
     }
 }

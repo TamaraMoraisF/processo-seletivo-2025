@@ -17,8 +17,8 @@ namespace Seals.Duv.Infrastructure.Repositories
         public async Task<IEnumerable<Navio>> GetAllAsync() =>
             await _context.Navios.ToListAsync();
 
-        public async Task<Navio?> GetByIdAsync(int id) =>
-            await _context.Navios.FindAsync(id);
+        public async Task<Navio?> GetByGuidAsync(Guid guid) =>
+            await _context.Navios.FirstOrDefaultAsync(n => n.NavioGuid == guid);
 
         public async Task<Navio> CreateAsync(Navio navio)
         {
@@ -27,21 +27,16 @@ namespace Seals.Duv.Infrastructure.Repositories
             return navio;
         }
 
-        public async Task UpdateAsync(int id, Navio navio)
+        public async Task UpdateAsync(Navio navio)
         {
-            navio.Id = id;
             _context.Navios.Update(navio);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Navio navio)
         {
-            var navio = await _context.Navios.FindAsync(id);
-            if (navio is not null)
-            {
-                _context.Navios.Remove(navio);
-                await _context.SaveChangesAsync();
-            }
+            _context.Navios.Remove(navio);
+            await _context.SaveChangesAsync();
         }
     }
 }

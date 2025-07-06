@@ -17,31 +17,31 @@ namespace Seals.Duv.Api.Controllers
             return Ok(items);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<NavioDto>> GetById(int id)
+        [HttpGet("{guid}")]
+        public async Task<ActionResult<NavioDto>> GetByGuid(Guid guid)
         {
-            var item = await _application.GetByIdAsync(id);
+            var item = await _application.GetByGuidAsync(guid);
             return item is not null ? Ok(item) : NotFound();
         }
 
         [HttpPost]
-        public async Task<ActionResult<NavioDto>> Create(NavioDto dto)
+        public async Task<ActionResult<NavioDto>> Create(CreateNavioDto dto)
         {
             var created = await _application.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return CreatedAtAction(nameof(GetByGuid), new { guid = created.NavioGuid }, created);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, NavioDto dto)
+        [HttpPut("{guid}")]
+        public async Task<IActionResult> Update(Guid guid, UpdateNavioDto dto)
         {
-            await _application.UpdateAsync(id, dto);
+            await _application.UpdateByGuidAsync(guid, dto);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{guid}")]
+        public async Task<IActionResult> Delete(Guid guid)
         {
-            await _application.DeleteAsync(id);
+            await _application.DeleteByGuidAsync(guid);
             return NoContent();
         }
     }
