@@ -5,14 +5,9 @@ using Seals.Duv.Infrastructure.Persistence;
 
 namespace Seals.Duv.Infrastructure.Repositories
 {
-    public class NavioRepository : INavioRepository
+    public class NavioRepository(DuvDbContext context) : INavioRepository
     {
-        private readonly DuvDbContext _context;
-
-        public NavioRepository(DuvDbContext context)
-        {
-            _context = context;
-        }
+        private readonly DuvDbContext _context = context;
 
         public async Task<IEnumerable<Navio>> GetAllAsync() =>
             await _context.Navios.ToListAsync();

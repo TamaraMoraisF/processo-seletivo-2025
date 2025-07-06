@@ -4,14 +4,9 @@ using Seals.Duv.Infrastructure.Persistence;
 
 namespace Seals.Duv.Infrastructure.Repositories
 {
-    public class DuvRepository : IDuvRepository
+    public class DuvRepository(DuvDbContext context) : IDuvRepository
     {
-        private readonly DuvDbContext _context;
-
-        public DuvRepository(DuvDbContext context)
-        {
-            _context = context;
-        }
+        private readonly DuvDbContext _context = context;
 
         public async Task<IEnumerable<Domain.Entities.Duv>> GetAllAsync() =>
             await _context.Duvs

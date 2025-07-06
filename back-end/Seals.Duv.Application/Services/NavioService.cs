@@ -1,6 +1,5 @@
 ﻿using Seals.Duv.Domain.Entities;
 using Seals.Duv.Domain.Interfaces;
-using Seals.Duv.Application.Validators;
 
 namespace Seals.Duv.Application.Services
 {
