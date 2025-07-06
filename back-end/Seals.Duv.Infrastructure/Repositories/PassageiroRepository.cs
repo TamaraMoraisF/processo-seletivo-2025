@@ -12,8 +12,8 @@ namespace Seals.Duv.Infrastructure.Repositories
         public async Task<IEnumerable<Passageiro>> GetAllAsync() =>
             await _context.Passageiros.ToListAsync();
 
-        public async Task<Passageiro?> GetByIdAsync(int id) =>
-            await _context.Passageiros.FindAsync(id);
+        public async Task<Passageiro?> GetByGuidAsync(Guid guid) =>
+            await _context.Passageiros.FirstOrDefaultAsync(p => p.PassageiroGuid == guid);
 
         public async Task AddAsync(Passageiro passageiro)
         {

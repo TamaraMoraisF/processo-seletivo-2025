@@ -11,6 +11,8 @@ namespace Seals.Duv.Application.Mappings
             CreateMap<Domain.Entities.Duv, DuvDto>().ReverseMap();
             CreateMap<Navio, NavioDto>().ReverseMap();
             CreateMap<Passageiro, PassageiroDto>().ReverseMap();
+            CreateMap<CreatePassageiroDto, Passageiro>();
+            CreateMap<UpdatePassageiroDto, Passageiro>();
         }
     }
 }

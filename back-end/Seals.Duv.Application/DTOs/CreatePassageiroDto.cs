@@ -2,9 +2,8 @@
 
 namespace Seals.Duv.Application.DTOs
 {
-    public class PassageiroDto
+    public class CreatePassageiroDto
     {
-        public Guid PassageiroGuid { get; set; }
         public string Nome { get; set; } = string.Empty;
         public TipoPassageiro Tipo { get; set; }
         public string Nacionalidade { get; set; } = string.Empty;
