@@ -8,13 +8,16 @@ namespace Seals.Duv.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Domain.Entities.Duv, DuvDto>().ReverseMap();
+            CreateMap<Domain.Entities.Duv, DuvDto>();
+            CreateMap<CreateDuvDto, Domain.Entities.Duv>();
+            CreateMap<UpdateDuvDto, Domain.Entities.Duv>();
             CreateMap<Navio, NavioDto>();
             CreateMap<CreateNavioDto, Navio>();
             CreateMap<UpdateNavioDto, Navio>();
-            CreateMap<Passageiro, PassageiroDto>().ReverseMap();
+            CreateMap<Passageiro, PassageiroDto>();
             CreateMap<CreatePassageiroDto, Passageiro>();
             CreateMap<UpdatePassageiroDto, Passageiro>();
+            CreateMap<PassageiroDuvDto, Passageiro>();
         }
     }
 }

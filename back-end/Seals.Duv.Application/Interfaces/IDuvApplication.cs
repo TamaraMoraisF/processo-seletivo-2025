@@ -5,9 +5,9 @@ namespace Seals.Duv.Application.Interfaces
     public interface IDuvApplication
     {
         Task<IEnumerable<DuvDto>> GetAllAsync();
-        Task<DuvDto?> GetByIdAsync(int id);
-        Task<DuvDto> CreateAsync(DuvDto dto);
-        Task UpdateAsync(int id, DuvDto dto);
-        Task DeleteAsync(int id);
+        Task<DuvDto?> GetByGuidAsync(Guid guid);
+        Task<DuvDto?> CreateAsync(CreateDuvDto dto);
+        Task<bool> UpdateByGuidAsync(Guid guid, UpdateDuvDto dto);
+        Task DeleteByGuidAsync(Guid guid);
     }
 }

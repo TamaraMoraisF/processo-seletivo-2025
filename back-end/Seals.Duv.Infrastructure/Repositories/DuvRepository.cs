@@ -19,11 +19,11 @@ namespace Seals.Duv.Infrastructure.Repositories
                 .Include(d => d.Passageiros)
                 .ToListAsync();
 
-        public async Task<Domain.Entities.Duv?> GetByIdAsync(int id) =>
+        public async Task<Domain.Entities.Duv?> GetByGuidAsync(Guid guid) =>
             await _context.Duvs
                 .Include(d => d.Navio)
                 .Include(d => d.Passageiros)
-                .FirstOrDefaultAsync(d => d.Id == id);
+                .FirstOrDefaultAsync(d => d.DuvGuid == guid);
 
         public async Task<Domain.Entities.Duv> CreateAsync(Domain.Entities.Duv duv)
         {
@@ -32,21 +32,16 @@ namespace Seals.Duv.Infrastructure.Repositories
             return duv;
         }
 
-        public async Task UpdateAsync(int id, Domain.Entities.Duv duv)
+        public async Task UpdateAsync(Domain.Entities.Duv duv)
         {
-            duv.Id = id;
             _context.Duvs.Update(duv);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Domain.Entities.Duv duv)
         {
-            var duv = await _context.Duvs.FindAsync(id);
-            if (duv is not null)
-            {
-                _context.Duvs.Remove(duv);
-                await _context.SaveChangesAsync();
-            }
+            _context.Duvs.Remove(duv);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -2,29 +2,39 @@
 
 namespace Seals.Duv.Application.Services
 {
-    public class DuvService : IDuvService
+    public class DuvService(IDuvRepository duvRepository) : IDuvService
     {
-        private readonly IDuvRepository _repository;
+        private readonly IDuvRepository _duvRepository = duvRepository;
 
-        public DuvService(IDuvRepository repository) => _repository = repository;
+        public Task<IEnumerable<Domain.Entities.Duv>> GetAllAsync() => _duvRepository.GetAllAsync();
 
-        public Task<IEnumerable<Domain.Entities.Duv>> GetAllAsync() => _repository.GetAllAsync();
-
-        public Task<Domain.Entities.Duv?> GetByIdAsync(int id) => _repository.GetByIdAsync(id);
+        public Task<Domain.Entities.Duv?> GetByGuidAsync(Guid guid) => _duvRepository.GetByGuidAsync(guid);
 
         public async Task<Domain.Entities.Duv> CreateAsync(Domain.Entities.Duv duv)
         {
             AdjustData(duv);
-            return await _repository.CreateAsync(duv);
+            return await _duvRepository.CreateAsync(duv);
         }
 
-        public async Task UpdateAsync(int id, Domain.Entities.Duv duv)
+        public async Task UpdateByGuidAsync(Guid guid, Domain.Entities.Duv duv)
         {
-            AdjustData(duv);
-            await _repository.UpdateAsync(id, duv);
+            var existing = await _duvRepository.GetByGuidAsync(guid);
+            if (existing is null) return;
+
+            existing.Numero = duv.Numero;
+            existing.DataViagem = duv.DataViagem;
+            existing.NavioId = duv.NavioId;
+
+            AdjustData(existing);
+            await _duvRepository.UpdateAsync(existing);
         }
 
-        public Task DeleteAsync(int id) => _repository.DeleteAsync(id);
+        public async Task DeleteByGuidAsync(Guid guid)
+        {
+            var duv = await _duvRepository.GetByGuidAsync(guid);
+            if (duv is not null)
+                await _duvRepository.DeleteAsync(duv);
+        }
 
         private static void AdjustData(Domain.Entities.Duv duv)
         {

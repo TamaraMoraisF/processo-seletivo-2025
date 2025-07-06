@@ -3,9 +3,9 @@
     public interface IDuvRepository
     {
         Task<IEnumerable<Entities.Duv>> GetAllAsync();
-        Task<Entities.Duv?> GetByIdAsync(int id);
+        Task<Entities.Duv?> GetByGuidAsync(Guid guid);
         Task<Entities.Duv> CreateAsync(Entities.Duv duv);
-        Task UpdateAsync(int id, Entities.Duv duv);
-        Task DeleteAsync(int id);
+        Task UpdateAsync(Entities.Duv duv);
+        Task DeleteAsync(Entities.Duv duv);
     }
 }

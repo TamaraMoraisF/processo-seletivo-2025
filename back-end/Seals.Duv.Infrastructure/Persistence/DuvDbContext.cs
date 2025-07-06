@@ -16,7 +16,8 @@ namespace Seals.Duv.Infrastructure.Persistence
             modelBuilder.Entity<Domain.Entities.Duv>()
                 .HasMany(d => d.Passageiros)
                 .WithOne(p => p.Duv)
-                .HasForeignKey(p => p.DuvId);
+                .HasForeignKey(p => p.DuvId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Domain.Entities.Duv>()
                 .HasOne(d => d.Navio)
