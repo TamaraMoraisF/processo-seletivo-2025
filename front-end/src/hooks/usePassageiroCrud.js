@@ -7,13 +7,12 @@ export function usePassageiroCrud(selectedDuv, setSelectedDuv, setDuvs) {
 
     const abrirFormularioPassageiro = (p = null, tipo = 1) => {
         setPassageiroEmEdicao(
-            p ??
-            {
+            p ?? {
                 nome: "",
                 nacionalidade: "",
                 fotoUrl: "",
                 sid: "",
-                duvId: selectedDuv.id,
+                duvGuid: selectedDuv.duvGuid,
                 tipo
             }
         );
@@ -26,8 +25,8 @@ export function usePassageiroCrud(selectedDuv, setSelectedDuv, setDuvs) {
             return;
         }
 
-        if (passageiroEmEdicao.id) {
-            await axios.put(`https://localhost:7204/api/Passageiro/${passageiroEmEdicao.id}`, passageiroEmEdicao);
+        if (passageiroEmEdicao.passageiroGuid) {
+            await axios.put(`https://localhost:7204/api/Passageiro/${passageiroEmEdicao.passageiroGuid}`, passageiroEmEdicao);
         } else {
             await axios.post("https://localhost:7204/api/Passageiro", passageiroEmEdicao);
         }
@@ -36,15 +35,15 @@ export function usePassageiroCrud(selectedDuv, setSelectedDuv, setDuvs) {
         await atualizarDuv();
     };
 
-    const removerPassageiro = async (id) => {
-        await axios.delete(`https://localhost:7204/api/Passageiro/${id}`);
+    const removerPassageiro = async (passageiroGuid) => {
+        await axios.delete(`https://localhost:7204/api/Passageiro/${passageiroGuid}`);
         await atualizarDuv();
     };
 
     const atualizarDuv = async () => {
         const response = await axios.get("https://localhost:7204/api/Duv");
         setDuvs(response.data);
-        const atualizada = response.data.find(d => d.id === selectedDuv.id);
+        const atualizada = response.data.find(d => d.duvGuid === selectedDuv.duvGuid);
         setSelectedDuv(atualizada);
     };
 

@@ -26,7 +26,7 @@ export function useDuvCrud() {
             duv ?? {
                 numero: "",
                 dataViagem: new Date().toISOString().split("T")[0],
-                navioId: 0,
+                navioGuid: "",
                 passageiros: [],
                 nomePassageiro: "",
                 nacionalidade: "",
@@ -35,21 +35,36 @@ export function useDuvCrud() {
                 tipoPassageiro: 1
             }
         );
+
+        if (duv) {
+            setDuvEmEdicao({
+                ...duv,
+                navioGuid: duv.navio?.navioGuid ?? "",
+                nomePassageiro: "",
+                nacionalidade: "",
+                fotoUrl: "",
+                sid: "",
+                tipoPassageiro: 1,
+                pessoas: [],
+            });
+        }
+
         setModalAberto(true);
     };
+
 
     const salvarDuv = async () => {
         try {
             let response;
 
-            if (duvEmEdicao.id) {
-                await axios.put(`https://localhost:7204/api/Duv/${duvEmEdicao.id}`, duvEmEdicao);
-                response = { data: { id: duvEmEdicao.id } };
+            if (duvEmEdicao.duvGuid) {
+                await axios.put(`https://localhost:7204/api/Duv/${duvEmEdicao.duvGuid}`, duvEmEdicao);
+                response = { data: { duvGuid: duvEmEdicao.duvGuid } };
             } else {
                 response = await axios.post("https://localhost:7204/api/Duv", duvEmEdicao);
             }
 
-            const duvId = response.data.id;
+            const duvGuid = response.data.duvGuid;
 
             if (duvEmEdicao.pessoas && duvEmEdicao.pessoas.length > 0) {
                 for (const pessoa of duvEmEdicao.pessoas) {
@@ -64,7 +79,7 @@ export function useDuvCrud() {
                         fotoUrl: pessoa.fotoUrl,
                         sid: pessoa.tipo === 2 ? pessoa.sid : null,
                         tipo: pessoa.tipo,
-                        duvId: duvId
+                        duvGuid: duvGuid
                     });
                 }
             }
@@ -75,9 +90,10 @@ export function useDuvCrud() {
             console.error("Erro ao salvar DUV:", error);
         }
     };
-    const removerDuv = async (id) => {
+
+    const removerDuv = async (duvGuid) => {
         try {
-            await axios.delete(`https://localhost:7204/api/Duv/${id}`);
+            await axios.delete(`https://localhost:7204/api/Duv/${duvGuid}`);
             await carregarDuvs();
         } catch (error) {
             console.error("Erro ao remover DUV:", error);

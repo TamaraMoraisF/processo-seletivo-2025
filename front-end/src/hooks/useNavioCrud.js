@@ -33,10 +33,14 @@ export function useNavioCrud() {
 
     const salvarNavio = async () => {
         try {
-            if (navioEmEdicao.id) {
-                await axios.put(`https://localhost:7204/api/Navio/${navioEmEdicao.id}`, navioEmEdicao);
+            const { navioGuid, nome, bandeira, imagemUrl } = navioEmEdicao ?? {};
+
+            const payload = { nome, bandeira, imagemUrl };
+
+            if (navioGuid) {
+                await axios.put(`https://localhost:7204/api/Navio/${navioGuid}`, payload);
             } else {
-                await axios.post("https://localhost:7204/api/Navio", navioEmEdicao);
+                await axios.post("https://localhost:7204/api/Navio", payload);
             }
 
             setModalAberto(false);
@@ -46,9 +50,9 @@ export function useNavioCrud() {
         }
     };
 
-    const removerNavio = async (id) => {
+    const removerNavio = async (navioGuid) => {
         try {
-            await axios.delete(`https://localhost:7204/api/Navio/${id}`);
+            await axios.delete(`https://localhost:7204/api/Navio/${navioGuid}`);
             await carregarNavios();
         } catch (error) {
             console.error("Erro ao remover navio:", error);

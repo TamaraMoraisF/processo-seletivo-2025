@@ -48,7 +48,7 @@ function NavioManager() {
 
             <div className="navios-carousel" id="carousel">
               {navios.map((navio) => (
-                <div key={navio.id} className="navio-card">
+                <div key={navio.navioGuid} className="navio-card">
                   <img src={navio.imagemUrl} alt={navio.nome} />
                   <div className="navio-card-body">
                     <h4>{navio.nome}</h4>
@@ -65,7 +65,7 @@ function NavioManager() {
                     </button>
                     <button
                       className="botao botao-perigo"
-                      onClick={() => removerNavio(navio.id)}
+                      onClick={() => removerNavio(navio.navioGuid)}
                     >
                       Remover
                     </button>
@@ -79,29 +79,25 @@ function NavioManager() {
 
           {modalAberto && (
             <div className="modal">
-              <h3>{navioEmEdicao.id ? "Editar" : "Adicionar"} Navio</h3>
+              <h3>{navioEmEdicao.navioGuid ? "Editar" : "Adicionar"} Navio</h3>
               <input
                 placeholder="Nome"
-                value={navioEmEdicao.nome}
-                onChange={(e) =>
-                  setNavioEmEdicao({ ...navioEmEdicao, nome: e.target.value })
-                }
+                value={navioEmEdicao?.nome ?? ""}
+                onChange={(e) => setNavioEmEdicao({ ...navioEmEdicao, nome: e.target.value })}
               />
+
               <input
                 placeholder="Bandeira"
-                value={navioEmEdicao.bandeira}
-                onChange={(e) =>
-                  setNavioEmEdicao({ ...navioEmEdicao, bandeira: e.target.value })
-                }
+                value={navioEmEdicao?.bandeira ?? ""}
+                onChange={(e) => setNavioEmEdicao({ ...navioEmEdicao, bandeira: e.target.value })}
               />
+
               <input
                 placeholder="Imagem URL"
-                value={navioEmEdicao.imagemUrl}
-                onChange={(e) =>
-                  setNavioEmEdicao({ ...navioEmEdicao, imagemUrl: e.target.value })
-                }
+                value={navioEmEdicao?.imagemUrl ?? ""}
+                onChange={(e) => setNavioEmEdicao({ ...navioEmEdicao, imagemUrl: e.target.value })}
               />
-              <button className="botao botao-primario" onClick={salvarNavio}>Salvar</button>
+              <button className="botao botao-primario" onClick={() => salvarNavio()}>Salvar</button>
               <button className="botao botao-perigo" onClick={() => setModalAberto(false)}>Cancelar</button>
             </div>
           )}
