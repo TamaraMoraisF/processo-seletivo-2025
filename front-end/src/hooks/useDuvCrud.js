@@ -6,6 +6,7 @@ export function useDuvCrud() {
     const [selectedDuv, setSelectedDuv] = useState(null);
     const [modalAberto, setModalAberto] = useState(false);
     const [duvEmEdicao, setDuvEmEdicao] = useState(null);
+    const [erros, setErros] = useState([]);
 
     useEffect(() => {
         carregarDuvs();
@@ -13,7 +14,7 @@ export function useDuvCrud() {
 
     const carregarDuvs = async () => {
         try {
-            const response = await axios.get("https://localhost:7204/api/Duv");
+            const response = await axios.get("https://localhost:7204/api/duvs");
             setDuvs(response.data);
             setSelectedDuv(response.data[0] || null);
         } catch (error) {
@@ -22,6 +23,8 @@ export function useDuvCrud() {
     };
 
     const abrirFormularioDuv = (duv = null) => {
+        setErros([]);
+
         setDuvEmEdicao(
             duv ?? {
                 numero: "",
@@ -32,7 +35,7 @@ export function useDuvCrud() {
                 nacionalidade: "",
                 fotoUrl: "",
                 sid: "",
-                tipoPassageiro: 1
+                tipoPassageiro: 1,
             }
         );
 
@@ -52,48 +55,47 @@ export function useDuvCrud() {
         setModalAberto(true);
     };
 
-
     const salvarDuv = async () => {
         try {
-            let response;
-
-            if (duvEmEdicao.duvGuid) {
-                await axios.put(`https://localhost:7204/api/Duv/${duvEmEdicao.duvGuid}`, duvEmEdicao);
-                response = { data: { duvGuid: duvEmEdicao.duvGuid } };
-            } else {
-                response = await axios.post("https://localhost:7204/api/Duv", duvEmEdicao);
+            // Validação simples no front para evitar envio com navioGuid vazio
+            if (!duvEmEdicao.navioGuid || duvEmEdicao.navioGuid.trim() === "") {
+                setErros(["Selecione um navio."]);
+                return;
             }
 
-            const duvGuid = response.data.duvGuid;
+            const payload = {
+                numero: duvEmEdicao.numero,
+                dataViagem: duvEmEdicao.dataViagem,
+                navioGuid: duvEmEdicao.navioGuid,
+                passageiros: (duvEmEdicao.pessoas || []).map(p => ({
+                    nome: p.nome,
+                    nacionalidade: p.nacionalidade,
+                    fotoUrl: p.fotoUrl,
+                    tipo: p.tipo,
+                    sid: p.tipo === 2 ? p.sid : null
+                }))
+            };
 
-            if (duvEmEdicao.pessoas && duvEmEdicao.pessoas.length > 0) {
-                for (const pessoa of duvEmEdicao.pessoas) {
-                    if (pessoa.tipo === 2 && !pessoa.sid?.trim()) {
-                        alert(`SID é obrigatório para o tripulante ${pessoa.nome}`);
-                        continue;
-                    }
-
-                    await axios.post("https://localhost:7204/api/Passageiro", {
-                        nome: pessoa.nome,
-                        nacionalidade: pessoa.nacionalidade,
-                        fotoUrl: pessoa.fotoUrl,
-                        sid: pessoa.tipo === 2 ? pessoa.sid : null,
-                        tipo: pessoa.tipo,
-                        duvGuid: duvGuid
-                    });
-                }
-            }
+            const response = await axios.post("https://localhost:7204/api/duvs", payload);
 
             setModalAberto(false);
+            setErros([]);
             await carregarDuvs();
         } catch (error) {
             console.error("Erro ao salvar DUV:", error);
+
+            if (error.response?.data?.errors) {
+                const validationErrors = Object.values(error.response.data.errors).flat();
+                setErros(validationErrors);
+            } else {
+                setErros(["Erro inesperado ao salvar DUV."]);
+            }
         }
     };
 
     const removerDuv = async (duvGuid) => {
         try {
-            await axios.delete(`https://localhost:7204/api/Duv/${duvGuid}`);
+            await axios.delete(`https://localhost:7204/api/duvs/${duvGuid}`);
             await carregarDuvs();
         } catch (error) {
             console.error("Erro ao remover DUV:", error);
@@ -110,6 +112,7 @@ export function useDuvCrud() {
         abrirFormularioDuv,
         salvarDuv,
         removerDuv,
-        setModalAberto
+        setModalAberto,
+        erros
     };
 }

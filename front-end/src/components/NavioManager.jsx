@@ -13,7 +13,9 @@ function NavioManager() {
     salvarNavio,
     removerNavio,
     setModalAberto,
+    erros
   } = useNavioCrud();
+
 
   const scrollCarousel = (direction) => {
     const carousel = document.getElementById("carousel");
@@ -80,6 +82,18 @@ function NavioManager() {
           {modalAberto && (
             <div className="modal">
               <h3>{navioEmEdicao.navioGuid ? "Editar" : "Adicionar"} Navio</h3>
+
+              {/* Exibe erros */}
+              {erros.length > 0 && (
+                <div className="erros-validacao">
+                  <ul>
+                    {erros.map((erro, index) => (
+                      <li key={index}>{erro}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <input
                 placeholder="Nome"
                 value={navioEmEdicao?.nome ?? ""}
@@ -97,10 +111,12 @@ function NavioManager() {
                 value={navioEmEdicao?.imagemUrl ?? ""}
                 onChange={(e) => setNavioEmEdicao({ ...navioEmEdicao, imagemUrl: e.target.value })}
               />
-              <button className="botao botao-primario" onClick={() => salvarNavio()}>Salvar</button>
+
+              <button className="botao botao-primario" onClick={salvarNavio}>Salvar</button>
               <button className="botao botao-perigo" onClick={() => setModalAberto(false)}>Cancelar</button>
             </div>
           )}
+
         </div>
       </div>
     </Layout>

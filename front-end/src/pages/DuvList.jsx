@@ -16,7 +16,8 @@ function DuvList() {
     abrirFormularioDuv,
     salvarDuv,
     removerDuv,
-    setModalAberto: setModalDuvAberto
+    setModalAberto: setModalDuvAberto,
+    erros: errosDuv
   } = useDuvCrud();
 
   const { navios } = useNavioCrud();
@@ -28,7 +29,8 @@ function DuvList() {
     abrirFormularioPassageiro,
     salvarPassageiro,
     removerPassageiro,
-    setModalAberto
+    setModalAberto,
+    erros: errosPassageiro
   } = usePassageiroCrud(selectedDuv, setSelectedDuv, () => { });
 
   return (
@@ -68,6 +70,16 @@ function DuvList() {
         {modalDuvAberto && (
           <div className="modal">
             <h3>{duvEmEdicao?.duvGuid ? "Editar DUV" : "Nova DUV"}</h3>
+
+            {errosDuv?.length > 0 && (
+              <div className="erros-validacao">
+                <ul>
+                  {errosDuv.map((erro, i) => (
+                    <li key={i}>{erro}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <input
               placeholder="Número"
@@ -244,6 +256,16 @@ function DuvList() {
       {modalAberto && (
         <div className="modal">
           <h3>{passageiroEmEdicao.passageiroGuid ? "Editar" : "Adicionar"} {passageiroEmEdicao.tipo === 2 ? "Tripulante" : "Passageiro"}</h3>
+
+          {errosPassageiro?.length > 0 && (
+            <div className="erros-validacao">
+              <ul>
+                {errosPassageiro.map((erro, i) => (
+                  <li key={i}>{erro}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <input
             placeholder="Nome"

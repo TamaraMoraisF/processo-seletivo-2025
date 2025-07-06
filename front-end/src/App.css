@@ -610,3 +610,13 @@ body::-webkit-scrollbar-thumb:hover {
   min-width: 100px;
   text-align: center;
 }
+
+.erros-validacao {
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+  color: #721c24;
+  padding: 10px 15px;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  font-size: 14px;
+}
