@@ -1,4 +1,5 @@
-﻿using Seals.Duv.Application.Exceptions;
+﻿using Seals.Duv.Application.Constants;
+using Seals.Duv.Application.Exceptions;
 using Seals.Duv.Domain.Entities;
 using Seals.Duv.Domain.Interfaces;
 
@@ -11,13 +12,13 @@ namespace Seals.Duv.Application.Validators
             var errors = new List<string>();
 
             if (string.IsNullOrWhiteSpace(entity.Nome))
-                errors.Add("Nome do navio é obrigatório.");
+                errors.Add(ValidationMessages.NavioNomeObrigatorio);
 
             if (string.IsNullOrWhiteSpace(entity.Bandeira))
-                errors.Add("Bandeira do navio é obrigatória.");
+                errors.Add(ValidationMessages.NavioBandeiraObrigatoria);
 
             if (string.IsNullOrWhiteSpace(entity.ImagemUrl))
-                errors.Add("Imagem do navio é obrigatória.");
+                errors.Add(ValidationMessages.NavioImagemObrigatoria);
 
             if (errors.Count != 0)
                 throw new ValidationException(errors);

@@ -1,4 +1,5 @@
-﻿using Seals.Duv.Application.Exceptions;
+﻿using Seals.Duv.Application.Constants;
+using Seals.Duv.Application.Exceptions;
 using Seals.Duv.Domain.Entities;
 using Seals.Duv.Domain.Interfaces;
 
@@ -11,19 +12,19 @@ namespace Seals.Duv.Application.Validators
             var errors = new List<string>();
 
             if (string.IsNullOrWhiteSpace(entity.Nome))
-                errors.Add("Nome do passageiro é obrigatório.");
+                errors.Add(ValidationMessages.PassageiroNomeObrigatorio);
 
             if (string.IsNullOrWhiteSpace(entity.Nacionalidade))
-                errors.Add("Nacionalidade é obrigatória.");
+                errors.Add(ValidationMessages.PassageiroNacionalidadeObrigatoria);
 
             if (string.IsNullOrWhiteSpace(entity.FotoUrl))
-                errors.Add("Foto do passageiro é obrigatória.");
+                errors.Add(ValidationMessages.PassageiroFotoObrigatoria);
 
             if (entity.Tipo == Domain.Enum.TipoPassageiro.Tripulante && string.IsNullOrWhiteSpace(entity.Sid))
-                errors.Add("Tripulantes devem ter um documento SID.");
+                errors.Add(ValidationMessages.PassageiroSidObrigatorioParaTripulante);
 
             if (entity.DuvId <= 0)
-                errors.Add("DuvId inválido.");
+                errors.Add(ValidationMessages.PassageiroDuvIdInvalido);
 
             if (errors.Count != 0)
                 throw new ValidationException(errors);

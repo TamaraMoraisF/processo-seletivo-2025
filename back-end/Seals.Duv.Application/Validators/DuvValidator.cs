@@ -1,4 +1,5 @@
-﻿using Seals.Duv.Application.Exceptions;
+﻿using Seals.Duv.Application.Constants;
+using Seals.Duv.Application.Exceptions;
 using Seals.Duv.Domain.Interfaces;
 
 namespace Seals.Duv.Application.Validators
@@ -10,13 +11,13 @@ namespace Seals.Duv.Application.Validators
             var errors = new List<string>();
 
             if (string.IsNullOrWhiteSpace(entity.Numero))
-                errors.Add("Número da DUV é obrigatório.");
+                errors.Add(ValidationMessages.DuvNumeroObrigatorio);
 
             if (entity.DataViagem == default)
-                errors.Add("Data da viagem é obrigatória.");
+                errors.Add(ValidationMessages.DuvDataObrigatoria);
 
             if (entity.NavioId <= 0)
-                errors.Add("NavioId inválido.");
+                errors.Add(ValidationMessages.DuvNavioIdInvalido);
 
             if (errors.Count != 0)
                 throw new ValidationException(errors);
