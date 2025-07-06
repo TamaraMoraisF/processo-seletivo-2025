@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./../App.css";
 import { usePassageiroCrud } from "../hooks/usePassageiroCrud";
+import { Link } from "react-router-dom";
 
 function DuvList() {
   const [duvs, setDuvs] = useState([]);
@@ -29,23 +30,32 @@ function DuvList() {
 
   return (
     <>
-      <div className="sidebar">
-        <h2>DUVs</h2>
-        {duvs.length === 0 && <p>Nenhuma DUV encontrada.</p>}
-        {duvs.map((duv) => (
-          <div
-            key={duv.id}
-            className={`duv-item ${selectedDuv?.id === duv.id ? "selected" : ""}`}
-            onClick={() => setSelectedDuv(duv)}
-          >
-            <strong>DUV: {duv.numero}</strong>
-            <br />
-            <span>
-              Data da viagem: {new Date(duv.dataViagem).toLocaleDateString()}
-            </span>
-          </div>
-        ))}
+      <div>
+        <div style={{ display: "flex", justifyContent: "center", paddingTop: "1rem" }}>
+          <Link to="/navios" style={{ textDecoration: "none" }}>
+            <button className="botao-navio">Gerenciar Navios</button>
+          </Link>
+        </div>
+
+        <div className="sidebar">
+          <h2>DUVs</h2>
+          {duvs.length === 0 && <p>Nenhuma DUV encontrada.</p>}
+          {duvs.map((duv) => (
+            <div
+              key={duv.id}
+              className={`duv-item ${selectedDuv?.id === duv.id ? "selected" : ""}`}
+              onClick={() => setSelectedDuv(duv)}
+            >
+              <strong>DUV: {duv.numero}</strong>
+              <br />
+              <span>
+                Data da viagem: {new Date(duv.dataViagem).toLocaleDateString()}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
+
 
       <div className="main">
         {selectedDuv ? (
