@@ -2,6 +2,8 @@
 using Seals.Duv.Application.Interfaces;
 using Seals.Duv.Application.Mappings;
 using Seals.Duv.Application.Services;
+using Seals.Duv.Application.Validators;
+using Seals.Duv.Domain.Entities;
 using Seals.Duv.Domain.Interfaces;
 using Seals.Duv.Infrastructure.Repositories;
 
@@ -16,6 +18,7 @@ namespace Seals.Duv.Api.Configurations
             RegisterApplications(services);
             RegisterServices(services);
             RegisterRepositories(services);
+            RegisterValidators(services);
 
             return services;
         }
@@ -39,6 +42,13 @@ namespace Seals.Duv.Api.Configurations
             services.AddScoped<IDuvRepository, DuvRepository>();
             services.AddScoped<INavioRepository, NavioRepository>();
             services.AddScoped<IPassageiroRepository, PassageiroRepository>();
+        }
+
+        private static void RegisterValidators(IServiceCollection services)
+        {
+            services.AddScoped<IValidator<Passageiro>, PassageiroValidator>();
+            services.AddScoped<IValidator<Navio>, NavioValidator>();
+            services.AddScoped<IValidator<Domain.Entities.Duv>, DuvValidator>();
         }
     }
 }

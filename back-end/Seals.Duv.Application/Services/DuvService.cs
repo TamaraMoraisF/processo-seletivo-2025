@@ -2,9 +2,10 @@
 
 namespace Seals.Duv.Application.Services
 {
-    public class DuvService(IDuvRepository duvRepository) : IDuvService
+    public class DuvService(IDuvRepository duvRepository, IValidator<Domain.Entities.Duv> validator) : IDuvService
     {
         private readonly IDuvRepository _duvRepository = duvRepository;
+        private readonly IValidator<Domain.Entities.Duv> _validator = validator;
 
         public Task<IEnumerable<Domain.Entities.Duv>> GetAllAsync() => _duvRepository.GetAllAsync();
 
@@ -13,6 +14,7 @@ namespace Seals.Duv.Application.Services
         public async Task<Domain.Entities.Duv> CreateAsync(Domain.Entities.Duv duv)
         {
             AdjustData(duv);
+            _validator.Validate(duv);
             return await _duvRepository.CreateAsync(duv);
         }
 
@@ -26,6 +28,8 @@ namespace Seals.Duv.Application.Services
             existing.NavioId = duv.NavioId;
 
             AdjustData(existing);
+            _validator.Validate(existing);
+
             await _duvRepository.UpdateAsync(existing);
         }
 

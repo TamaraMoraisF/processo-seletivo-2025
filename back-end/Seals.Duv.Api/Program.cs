@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Seals.Duv.Api.Configurations;
 using Seals.Duv.Application.Mappings;
 using Seals.Duv.Infrastructure.Persistence;
@@ -49,6 +50,34 @@ builder.Services.AddCors(options =>
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 var app = builder.Build();
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.ContentType = "application/json";
+
+        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+        if (exceptionHandlerPathFeature?.Error is Seals.Duv.Application.Exceptions.ValidationException validationEx)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                Title = "Validation Error",
+                validationEx.Errors
+            });
+        }
+        else
+        {
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                Title = "An unexpected error occurred.",
+                Detail = exceptionHandlerPathFeature?.Error?.Message
+            });
+        }
+    });
+});
 
 app.UseSwagger();
 app.UseSwaggerUI();
