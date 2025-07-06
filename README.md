@@ -51,6 +51,21 @@ O repositório é dividido em duas principais seções:
 
 - **Swagger**: A API pode ser acessada via Swagger para facilitar o teste dos endpoints na URL: `https://localhost:7204/swagger/index.html`.
 
+### Testes Automatizados
+
+Foram implementados testes unitários para garantir a confiabilidade da aplicação e validar regras de negócio. Os testes abrangem:
+
+- Camada de **Serviços**
+- Camada de **Aplicação**
+- **Validadores** (entidades e regras customizadas)
+
+Para executar os testes:
+
+```bash
+cd back-end/tests
+dotnet test
+```
+
 ---
 
 ## Front-End
